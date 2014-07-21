@@ -1,0 +1,67 @@
+@# one notification on top right navbar
+@macro notification(id, title, dt, body, url=None, detail=None):
+@set detail = detail if detail != None else '详情'
+<li data-mlid="{{ id }}">
+    <div class="title">
+        {{ title|e }}
+        @set dt = dt | dt
+        <span class="muted timeago" title="{{ dt }}">{{ dt }}</span>
+        <button type="button" class="close">&times;</button>
+    </div>
+    <div class="media">
+        <div class="media-body">
+            {{ body|e }}
+            @if url
+            <a target="_blank" class="detail" href="{{ url }}">{{ detail }}</a>
+            @endif
+        </div>
+    </div>
+</li>
+@endmacro
+
+
+<div class="navbar navbar-inverse navbar-fixed-top" id="ns-navtop">
+    <div class="navbar-inner">
+        <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="#">Supervisor</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav nav-pills pull-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" href="#"
+                            data-toggle="dropdown" id="ns-navtop-user">
+                            {{ handler.username }}
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{ reverse_url('reset-password') }}">
+                                    <i class="fa fa-key"></i> 修改密码
+                                </a>
+                            </li>
+
+                            <li class="divider"></li>
+
+                            <li>
+                                <a id="logout" href="#!">
+                                    <i class="fa fa-power-off"></i> 注销
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav">
+                    <li class="active"><a href="/">首页</a></li>
+                    <li><a href="#!about">关于</a></li>
+                    <li><a href="#!contact">联系</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>

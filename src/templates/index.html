@@ -1,0 +1,58 @@
+@extends "base.html"
+
+@block css
+@#<link rel="stylesheet/less" href="{{ static_url('less/index.less') }}">
+@endblock
+
+
+@block js
+<script src="{{ static_url('js/index.js') }}"></script>
+@endblock
+
+
+@block main
+<div class="row-fluid">
+    <section>
+        <div class="page-header">
+            <h3>
+                Supervisor进程列表
+                <a class="btn btn-primary" href="{{ reverse_url('add-process') }}">
+                    <i class="fa fa-plus"></i> 添加
+                </a>
+            </h3>
+        </div>
+        <div class="page-body" id="hosts" data-detail="{{ reverse_url('host-detail') }}">
+
+            @for h in hosts:
+            <div data-host="{{ h.host }}" data-port="{{ h.port }}">
+
+                @if loop.index != 1:
+                <br> <br> <hr>
+                @endif
+
+                <h4>
+                    #{{ loop.index }}
+                    -
+                    <span class="ns-green">{{ h.host }}:{{ h.port }}</span>
+                </h4>
+
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>状态</th>
+                            <th>描述</th>
+                            <th>名称</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+            @endfor
+
+        </div>
+
+    </section>
+</div>
+@endblock

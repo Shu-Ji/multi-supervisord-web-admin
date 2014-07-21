@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Supervisor分布式进程管理</title>
+        <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="render" content="webkit">
+        <meta name="author" content="">
+
+        <link rel="icon" href="/favicon.ico">
+
+        @block cssbase
+        <link rel="stylesheet" href="/static/vendor/bootplus/css/bootplus.min.css">
+        <link rel="stylesheet" href="/static/vendor/bootplus/css/bootplus-responsive.min.css">
+        <link rel="stylesheet" href="/static/vendor/font-awesome/css/font-awesome.min.css">
+
+        <link rel="stylesheet/less" href="{{ static_url('less/base.less') }}">
+        @endblock
+
+        {% block csslib %}{% endblock %}
+        {% block css %}{% endblock %}
+
+        <script src="/static/vendor/less-1.7.1.min.js"></script>
+    </head>
+
+    <body>
+        @include "components/topnav.html"
+        @from "components/widgets.html" import dialog
+        <div class="container">
+            <div class="row">
+                @#include "components/sidebar.html"
+                @block main12
+                <div class="span12" id="ns-main">
+                    {% block main %}{% endblock %}
+                </div>
+                @endblock
+            </div>
+            @include "components/footer.html"
+        </div>
+
+        {{ dialog() }}
+
+        @block jsbase
+        <script src="/static/vendor/jquery-2.1.1.min.js"></script>
+        <script src="/static/vendor/bootplus/js/bootstrap.min.js"></script>
+        @endblock
+
+        {% block jslib %}{% endblock %}
+        {% block body %}{% endblock %}
+
+        <script src="{{ static_url('js/base.js') }}"></script>
+
+        {% block js %}{% endblock %}
+
+    </body>
+
+</html>

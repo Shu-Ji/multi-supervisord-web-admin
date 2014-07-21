@@ -1,0 +1,69 @@
+@extends "base.html"
+
+
+@block csslib
+@endblock
+
+
+@block css
+@endblock
+
+
+@block jslib
+<script src="/static/vendor/jquery.form.min.js"></script>
+@endblock
+
+
+@block js
+<script>
+    $(function(){
+        var $form = $('#form-add');
+
+        $form.ajaxForm({
+            beforeSubmit: function(){
+            },
+            error: function(){
+                ns.show_dialog('修改失败，请稍后再试', '错误', 'ns-red');
+            },
+            success: function(res){
+                if(res.err){
+                    ns.show_dialog(res.msg, '错误', 'ns-red');
+                }else{
+                    ns.show_dialog('恭喜，修改成功。', '修改成功', 'ns-green');
+                }
+            }
+        });
+    });
+</script>
+@endblock
+
+
+@block main
+@from "components/widgets.html" import form_field as field, form_submit as submit
+<div class="row-fluid">
+    <section>
+        <div class="page-header"><h3>添加Supervisor进程</h3></div>
+        <div class="page-body">
+            <form class="form-horizontal" id="form-add" method="post"
+                action="{{ reverse_url('index') }}">
+
+                <input type="hidden" name="action" value="add">
+
+                {{ field('用户名', name='user', focus=True, required=False,
+                         placeholder='(选填)') }}
+
+                {{ field('密码', name='pwd', type='password', required=False,
+                         placeholder='(选填)') }}
+
+                {{ field('地址', name='host', value='localhost',
+                         help_inline='服务器的IP地址或者域名。示例：127.0.0.1或example.com') }}
+
+                {{ field('端口', name='port', value='9001') }}
+
+                {{ submit() }}
+
+            </form>
+        </div>
+    </section>
+</div>
+@endblock

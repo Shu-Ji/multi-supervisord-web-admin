@@ -1,0 +1,145 @@
+@set path = request.path
+
+@macro hl(link):
+    @if path == link or path.find(link) == 1:
+        class="active"
+    @endif
+@endmacro
+
+
+@macro navitem(header, subitems=None, link='', icon=None):
+@set active = ' active open' if link and path.find(link) == 1 else ''
+<li class="nav-header{{ active }} hassub{{ (subitems != None)|int }}">
+    @if icon != None and subitems != None:
+    <i class="fa fa-{{ icon }}"></i>
+    @endif
+
+@set subitems = subitems or []
+
+@set sublen = []
+@for i in subitems[:]:
+    @if i[-1] != True:
+    @do sublen.append('@')
+    @endif
+@endfor
+@set sublen = sublen.count('@')
+
+@set header = (header ~ '　<span class="label">' ~ (sublen or '') ~ '</span>')
+@if not subitems:
+    @# no subitems
+    @#<span data-link="{{ reverse_url(link) }}">{{ header }}</span>
+    <a href="{{ reverse_url(link) }}">
+        @if icon != None:
+        <i class="fa fa-{{ icon }}"></i>
+        @endif
+        {{ header }}
+    </a>
+@else
+    {{ header }}
+@endif
+</li>
+
+@# show_when_active: if True: it will not show in the navs unless link in path
+@for sub in subitems:
+    @set link = reverse_url(sub[1])
+    @set show_when_active = sub[-1] == True
+    @if show_when_active and (link not in path):
+        @continue
+    @endif
+    @set active = ' active' if link in path else ''
+    @set link = '' if show_when_active else 'href="' ~ link ~ '"'
+    <li class="ns-nav-item{{ active}}">
+        <a {{ link }}>　{{ sub[0] }}</a>
+    </li>
+@endfor
+@endmacro
+
+
+<div class="span3" id="ns-sidebar">
+    <div class="sidebar-nav">
+        <ul class="nav nav-list">
+            {{ navitem(
+                'SQL模板',
+                [
+                    ('添加模板', 'template_create'),
+                    ('修改模板', 'template_update_base', True),
+                    ('模板列表', 'template_list_base'),
+                ],
+                'template',
+                'file-o'
+            ) }}
+
+            {{ navitem(
+                '查询任务',
+                [
+                    ('添加任务', 'schedule_create'),
+                    ('修改任务', 'schedule_update_base', True),
+                    ('定时任务列表', 'schedule_list'),
+                    (his_name ~ '的任务列表', 'schedule_others_base', True),
+                    ('任务执行历史', 'schedule_history'),
+                    ('组员任务浏览', 'schedule_group'),
+                ],
+                'schedule',
+                'search'
+            ) }}
+
+            {{ navitem(
+                '数据字典',
+                [
+                    ('常用表介绍', 'table_baseinfo'),
+                    ('所有表介绍', 'table_baseall'),
+                ],
+                'table',
+                'table'
+            ) }}
+
+            {#
+            {{ navitem(
+                '账号管理',
+                [
+                    ('修改个人信息', 'profile_me'),
+                    ('常用同步配置', 'profile_general'),
+                ],
+                'profile'
+            ) }}
+            #}
+
+            {{ navitem(
+                '帮助',
+                [
+                    ('HIVE查询示例', 'help_hive_example'),
+                    ('HIVE函数及运算符', 'help_hive_function'),
+                    ('SQL变量替换', 'help_sqlexpr'),
+                    ('计划任务时间表达式', 'help_cronexpr'),
+                    ('集群任务分布图', 'help_perf_show_base'),
+                    ('Q & A', 'help_qa'),
+                ],
+                'help',
+                'book'
+            ) }}
+
+
+            {{ navitem('意见反馈', None, 'feedback', 'comments') }}
+
+            @if not handler.is_admin:
+            {{ navitem('权限申请', None, 'privilege', 'key') }}
+            @endif
+
+            @if handler.is_admin:
+            {{ navitem(
+                '后台管理',
+                [
+                    ('用户管理', 'admin_user_manage'),
+                    ('系统通知', 'admin_system_notification'),
+                    ('权限管理', 'admin_privilege'),
+                    ('网站设置', 'admin_website'),
+                ],
+                'admin',
+                'cogs'
+            ) }}
+            @endif
+
+
+        </ul>
+    </div>
+</div>

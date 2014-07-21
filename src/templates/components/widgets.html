@@ -1,0 +1,69 @@
+@# modal dialog
+@macro dialog(header='', body='', show_header=True, id='ns-dialog')
+<div class="modal hide fade" id="{{ id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    @if show_header:
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3>{{ header or '提示' }}</h3>
+    </div>
+    @endif
+    <div class="modal-body">
+        {{ body or '加载中，请稍后...' }}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">
+            关闭
+        </button>
+    </div>
+</div>
+@# user can not hide the dialog if #ns-modal-backdrop shown
+<div id="ns-modal-backdrop" class="hide"></div>
+@endmacro
+
+
+@macro form_field(label, required=True, name=None, focus=False, disabled=False,
+                value='', help_inline='', help_block='', type='text',
+                placeholder='', rows=2, id=None)
+@set id = id or name
+<div class="control-group">
+    <label class="control-label" for="{{ id }}">
+        @if required:
+        <span class="ns-required">*</span>{{ label }}
+        @else
+        {{ label }}
+        @endif
+    </label>
+    <div class="controls">
+        @set required = ' required="required"' if required else ''
+        @set name = ('id="' ~ id ~ '" name="' ~ name ~ '"') if name else ''
+        @set focus = 'autofocus="autofocus"' if focus else ''
+        @if type == 'textarea':
+        <textarea class="span12" {{ name }} {{ focus }} rows="{{ rows }}" {{ required }}
+            {{ 'placeholder="' ~ placeholder ~ '"' }}>{{ value|unicode }}</textarea>
+        @else
+        <input class="span12" type="{{ type }}" {{ name }} {{ focus }} {{ required }}
+        {{ 'placeholder="' ~ placeholder ~ '"' }} {{ 'disabled' * disabled|int }}
+        value="{{ value }}">
+        @endif
+
+        @if help_inline:
+        <span class="help-inline">{{ help_inline }}</span>
+        @elif help_block:
+        @set hide = 'hide' if help_block == 'hide' else ''
+        <div class="help-block {{ hide }} ns-red">{{ help_block }}</div>
+        @endif
+    </div>
+</div>
+@endmacro
+
+
+@macro form_submit(value='提交', cancel=False):
+<div class="control-group">
+    <div class="controls">
+        <input type="submit" class="btn btn-primary" value="{{ value }}">
+        @if cancel:
+        <input type="button" class="btn g-btn-cancel" value="取消">
+        @endif
+    </div>
+</div>
+@endmacro
