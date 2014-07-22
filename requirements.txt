@@ -1,0 +1,10 @@
+APScheduler==2.1.2
+Jinja2==2.7.3
+MarkupSafe==0.23
+SQLAlchemy==0.9.6
+argparse==1.2.1
+backports.ssl-match-hostname==3.4.0.2
+certifi==14.05.14
+futures==2.1.6
+tornado==4.0
+wsgiref==0.1.2
