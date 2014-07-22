@@ -47,6 +47,24 @@ class IndexHandler(BaseHandler):
 
         self.write(ret)
 
+    def post_stop(self):
+        host = self.input('host')
+        port = self.input('port')
+        name = self.input('name')
+        group = self.input('group')
+
+        host = H.get_one_host_info(self, host, port)
+        sv.stop_one_process(host, name, group)
+
+    def post_restart(self):
+        host = self.input('host')
+        port = self.input('port')
+        name = self.input('name')
+        group = self.input('group')
+
+        host = H.get_one_host_info(self, host, port)
+        sv.restart_one_process(host, name, group)
+
 
 class ResetPasswordHandler(BaseHandler):
     def get(self):

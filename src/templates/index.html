@@ -1,7 +1,11 @@
 @extends "base.html"
 
 @block css
-@#<link rel="stylesheet/less" href="{{ static_url('less/index.less') }}">
+<style>
+    td .action {
+        padding: 0 10px;
+    }
+</style>
 @endblock
 
 
@@ -42,7 +46,7 @@
                             <th>状态</th>
                             <th>描述</th>
                             <th>名称</th>
-                            <th>操作</th>
+                            <th class="center">操作</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
