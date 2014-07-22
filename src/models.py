@@ -74,6 +74,16 @@ class Host(Base):
     is_active = Column(Boolean, server_default='1')
 
     @staticmethod
+    def delete(db, id):
+        return bool(db.query(Host).filter_by(id=id).delete())
+
+    @staticmethod
+    def update(db, id, user, pwd, host, port):
+        return bool(db.query(Host).filter_by(id=id).update(
+            {'user': user, 'pwd': pwd, 'host': host, 'port': port}
+        ))
+
+    @staticmethod
     def add(handler, user, pwd, host, port):
         db = handler.db
 
@@ -86,6 +96,10 @@ class Host(Base):
     @staticmethod
     def get_all_active_hosts(handler):
         return handler.db.query(Host).filter_by(is_active=True)
+
+    @staticmethod
+    def get_one_host_info_by_id(db, id):
+        return db.query(Host).filter_by(id=id).first()
 
     @staticmethod
     def get_one_host_info(handler, host, port):

@@ -21,7 +21,7 @@
             <h3>
                 Supervisor进程列表
                 <a class="btn btn-primary" href="{{ reverse_url('add-process') }}">
-                    <i class="fa fa-plus"></i> 添加
+                    <i class="fa fa-plus"></i> 添加Supervisor进程
                 </a>
             </h3>
         </div>
@@ -38,6 +38,15 @@
                     #{{ loop.index }}
                     -
                     <span class="ns-green">{{ h.host }}:{{ h.port }}</span>
+
+                    <a class="btn btn-success action mod"
+                        href="{{ reverse_url('update-process', h.id) }}">
+                        <i class="fa fa-edit"></i> 修改配置
+                    </a>
+
+                    <a data-id="{{ h.id }}" class="btn btn-danger action del" href="#!">
+                        <i class="fa fa-trash-o"></i> 删除配置
+                    </a>
                 </h4>
 
                 <table class="table table-striped table-bordered table-hover">

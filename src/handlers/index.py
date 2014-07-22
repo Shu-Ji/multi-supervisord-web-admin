@@ -24,16 +24,44 @@ class HostDetailHandler(BaseHandler):
 
 
 class IndexHandler(BaseHandler):
-    def get(self):
-        if self.request.path == self.reverse_url('add-process'):
-            self.render('add-process.html')
-        else:
+    def get(self, pid=None):
+        path = self.request.path
+        if path == self.reverse_url('index'):
             self.render('index.html', hosts=H.get_all_active_hosts(self))
+        elif pid is not None:
+            host = H.get_one_host_info_by_id(self.db, pid)
+            if host is None:
+                return self.redirect('/404')
+            self.render('add-process.html', stype='update', host=host)
+        elif path == self.reverse_url('add-process'):
+            self.render('add-process.html', stype='add')
 
     def post(self):
         t = 'post_' + self.input('action')
         if hasattr(self, t):
             getattr(self, t)()
+
+    def post_update(self):
+        user = self.input('user')
+        pwd = self.input('pwd')
+        host = self.input('host')
+        port = self.input('port')
+        id = self.input('id')
+
+        ret = {'err': not H.update(self.db, id, user, pwd, host, port)}
+        if ret['err']:
+            ret['msg'] = u'更新失败。不存在的配置。错误码：%s' % id
+
+        self.write(ret)
+
+    def post_del(self):
+        id = self.input('id')
+
+        ret = {'err': not H.delete(self.db, id)}
+        if ret['err']:
+            ret['msg'] = u'删除失败。不存在的配置。错误码：%s' % id
+
+        self.write(ret)
 
     def post_add(self):
         user = self.input('user')

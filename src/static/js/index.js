@@ -76,4 +76,19 @@
         });
     });
 
+    $hosts.on('click', '.action.del', function(){
+        if(!confirm('确认删除吗？')){
+            return;
+        }
+        var self = $(this);
+        $.post('/', {action: 'del', id: self.data('id')}, function(res){
+            if(res.err){
+                ns.show_dialog(res.msg, '错误', 'ns-red');
+            }else{
+                ns.show_dialog('已删除', '成功', 'ns-green');
+                self.parents('[data-host]:first').remove();
+            }
+        });
+    });
+
 })(jQuery);
