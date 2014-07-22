@@ -4,8 +4,12 @@ import xmlrpclib
 
 
 def _gen_server(host):
-    return xmlrpclib.Server('http://%(user)s:%(pwd)s@%(host)s:%(port)s/RPC2'
-            % host.as_dict())
+    if host.user:
+        return xmlrpclib.Server('http://%(user)s:%(pwd)s@%(host)s:%(port)s/RPC2'
+                % host.as_dict())
+    else:
+        return xmlrpclib.Server('http://%(host)s:%(port)s/RPC2'
+                % host.as_dict())
 
 
 def get_one_host_info(host):
