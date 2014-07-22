@@ -30,7 +30,6 @@ class IndexHandler(BaseHandler):
         else:
             self.render('index.html', hosts=H.get_all_active_hosts(self))
 
-    @async
     def post(self):
         t = 'post_' + self.input('action')
         if hasattr(self, t):
@@ -42,14 +41,13 @@ class IndexHandler(BaseHandler):
         host = self.input('host')
         port = self.input('port')
 
-        handler = self.fake
-        ret = {'err': not H.add(handler, user, pwd, host, port)}
+        ret = {'err': not H.add(self, user, pwd, host, port)}
         if ret['err']:
             ret['msg'] = u'添加失败。已存在相同的配置：%s:%s' % (host, port)
 
-        handler.db.close()
         self.write(ret)
 
+    @async
     def post_stop(self):
         host = self.input('host')
         port = self.input('port')
@@ -61,6 +59,7 @@ class IndexHandler(BaseHandler):
         sv.stop_one_process(host, name, group)
         handler.db.close()
 
+    @async
     def post_restart(self):
         host = self.input('host')
         port = self.input('port')
