@@ -1,8 +1,21 @@
 multi-supervisord-web-admin
 ===========================
 
-Mulitple Supervisord Web Admin
+Mulitple Supervisord Web Admin.
 
+
+Usage
+===========================
+
+    $ cd src
+    $ python models.py
+    $ python app.py
+
+Browse http://127.0.0.1:8090 with your Google Chrome.
+
+
+Preview
+==================
 
 Home Page:
 
