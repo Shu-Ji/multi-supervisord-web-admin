@@ -7,6 +7,7 @@ Mulitple Supervisord Web Admin.
 Usage
 ===========================
 
+    $ pip install -r requiretments.txt
     $ cd src
     $ python models.py
     $ python app.py
